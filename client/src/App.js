@@ -8,9 +8,29 @@ function App() {
 	const [loginPassword, setLoginPassword] = useState("");
 	const [data, setData] = useState(null);
 
-	const register = () => {};
-	const login = () => {};
-	const getUser = () => {};
+	const register = () => {
+		axios
+			.post(
+				"http://localhost:5000/register",
+				{ username: registerUsername, password: registerPassword },
+				{ withCredentials: true }
+			)
+			.then((res) => console.log(res));
+	};
+	const login = () => {
+		axios
+			.post(
+				"http://localhost:5000/login",
+				{ username: loginUsername, password: loginPassword },
+				{ withCredentials: true }
+			)
+			.then((res) => console.log(res));
+	};
+	const getUser = () => {
+		axios
+			.get("http://localhost:5000/user", { withCredentials: true })
+			.then((res) => setData(res.data));
+	};
 
 	return (
 		<div className="App">
