@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import { Register } from "./components/Register";
+import { Login } from "./components/Login";
+
 function App() {
 	const [registerUsername, setRegisterUsername] = useState("");
 	const [registerPassword, setRegisterPassword] = useState("");
+	const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
 	const [loginUsername, setLoginUsername] = useState("");
 	const [loginPassword, setLoginPassword] = useState("");
 	const [data, setData] = useState(null);
@@ -35,29 +39,20 @@ function App() {
 	return (
 		<div className="App">
 			<div>
-				<h1>Register</h1>
-				<input
-					placeholder="username"
-					onChange={(event) => setRegisterUsername(event.target.value)}
+				<Register
+					register={register}
+					setRegisterConfirmPassword={setRegisterConfirmPassword}
+					setRegisterPassword={setRegisterPassword}
+					setRegisterUsername={setRegisterUsername}
 				/>
-				<input
-					placeholder="password"
-					onChange={(event) => setRegisterPassword(event.target.value)}
-				/>
-				<button onClick={register}>Submit</button>
 			</div>
 
 			<div>
-				<h1>Login</h1>
-				<input
-					placeholder="username"
-					onChange={(event) => setLoginUsername(event.target.value)}
+				<Login
+					login={login}
+					setLoginUsername={setLoginUsername}
+					setLoginPassword={setLoginPassword}
 				/>
-				<input
-					placeholder="password"
-					onChange={(event) => setLoginPassword(event.target.value)}
-				/>
-				<button onClick={login}>Submit</button>
 			</div>
 
 			<div>
