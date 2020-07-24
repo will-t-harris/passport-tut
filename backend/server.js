@@ -7,8 +7,18 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const expressSession = require("express-session");
 const bodyParser = require("body-parser");
+const User = require("./User");
+require("dotenv").config({ path: ".env" });
 
 const app = express();
+
+mongoose.connect(
+	process.env.ATLAS_URI,
+	{ useNewUrlParser: true, useUnifiedTopology: true },
+	() => {
+		console.log("Mongoose connected");
+	}
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,16 +38,43 @@ app.use(
 );
 
 app.use(cookieParser("secretcode"));
+app.use(passport.initialize());
+app.use(passport.session());
+require("./passportConfig")(passport);
 
 //Routes
-app.post("/login", (req, res) => {
-	console.log(req.body);
+app.post("/login", (req, res, next) => {
+	passport.authenticate("local", (err, user, info) => {
+		if (err) throw err;
+		if (!user) res.send("No user exists");
+		if (user) {
+			req.logIn(user, (err) => {
+				if (err) throw err;
+				if (!err) {
+					res.send("Successfully authenticated");
+					console.log(req.user);
+				}
+			});
+		}
+	})(req, res, next);
 });
 app.post("/register", (req, res) => {
-	console.log(req.body);
+	User.findOne({ username: req.body.username }, async (err, doc) => {
+		if (err) throw err;
+		if (doc) res.send("User already exists");
+		if (!doc) {
+			const hashedPassword = await bcrypt.hash(req.body.password, 10);
+			const newUser = new User({
+				username: req.body.username,
+				password: hashedPassword,
+			});
+			await newUser.save();
+			res.send("User created");
+		}
+	});
 });
 app.get("/user", (req, res) => {
-	console.log(req.body);
+	res.send(req.user);
 });
 
 app.listen(5000, () => {
