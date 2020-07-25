@@ -7,14 +7,14 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const expressSession = require("express-session");
 const bodyParser = require("body-parser");
-const User = require("./User");
+const User = require("./models/User");
 require("dotenv").config({ path: ".env" });
 
 const app = express();
 
 mongoose.connect(
 	process.env.ATLAS_URI,
-	{ useNewUrlParser: true, useUnifiedTopology: true },
+	{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
 	() => {
 		console.log("Mongoose connected");
 	}
@@ -59,13 +59,13 @@ app.post("/login", (req, res, next) => {
 	})(req, res, next);
 });
 app.post("/register", (req, res) => {
-	User.findOne({ username: req.body.username }, async (err, doc) => {
+	User.findOne({ email: req.body.email }, async (err, doc) => {
 		if (err) throw err;
 		if (doc) res.send("User already exists");
 		if (!doc) {
 			const hashedPassword = await bcrypt.hash(req.body.password, 10);
 			const newUser = new User({
-				username: req.body.username,
+				email: req.body.email,
 				password: hashedPassword,
 			});
 			await newUser.save();
