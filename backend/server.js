@@ -8,7 +8,9 @@ const bcrypt = require("bcryptjs");
 const expressSession = require("express-session");
 const bodyParser = require("body-parser");
 const User = require("./models/User");
+const Todo = require("./models/Todo");
 require("dotenv").config({ path: ".env" });
+const router = require("./routes/index");
 
 const app = express();
 
@@ -76,6 +78,8 @@ app.post("/register", (req, res) => {
 app.get("/user", (req, res) => {
 	res.send(req.user);
 });
+
+app.use("/", router);
 
 app.listen(5000, () => {
 	console.log("Server started");
