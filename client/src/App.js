@@ -5,6 +5,7 @@ import axios from "axios";
 import { Register } from "./components/Register";
 import { Login } from "./components/Login";
 import { TodoList } from "./components/TodoList";
+import { AddTodo } from "./components/AddTodo";
 
 function App() {
 	const [data, setData] = useState(null);
@@ -20,6 +21,7 @@ function App() {
 			<Route path="/" exact component={TodoList} />
 			<Route path="/login" component={Login} />
 			<Route path="/register" component={Register} />
+			<Route path="/add" component={AddTodo} />
 		</Router>
 	);
 }
