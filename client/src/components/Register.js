@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-export const Register = ({
-	setRegisterUsername,
-	setRegisterPassword,
-	setRegisterConfirmPassword,
-	register,
-}) => {
+export const Register = () => {
+	const [registerEmail, setRegisterEmail] = useState("");
+	const [registerPassword, setRegisterPassword] = useState("");
+	const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
+	const register = () => {
+		axios
+			.post(
+				"http://localhost:5000/register",
+				{ email: registerEmail, password: registerPassword },
+				{ withCredentials: true }
+			)
+			.then((res) => console.log(res))
+			.then(() => (window.location = "/"))
+			.catch((err) => console.error(`Error in Axios call: ${err}`));
+	};
 	return (
 		<>
 			<h2 className="pt-20">Register</h2>
@@ -15,7 +24,8 @@ export const Register = ({
 				className="bg-purple-100"
 				type="email"
 				name="email"
-				onChange={(event) => setRegisterUsername(event.target.value)}
+				required={true}
+				onChange={(event) => setRegisterEmail(event.target.value)}
 			/>
 			<label htmlFor="password">Password</label>
 			<input
