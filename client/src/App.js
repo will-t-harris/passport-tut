@@ -6,6 +6,9 @@ import { Register } from "./components/Register";
 import { Login } from "./components/Login";
 import { TodoList } from "./components/TodoList";
 import { AddTodo } from "./components/AddTodo";
+import { EditTodo } from "./components/EditTodo";
+import { Sidebar } from "./components/Sidebar";
+import { Header } from "./components/Header";
 
 function App() {
 	const [data, setData] = useState(null);
@@ -18,10 +21,12 @@ function App() {
 
 	return (
 		<Router>
+			<Sidebar />
 			<Route path="/" exact component={TodoList} />
 			<Route path="/login" component={Login} />
 			<Route path="/register" component={Register} />
 			<Route path="/add" component={AddTodo} />
+			<Route path="/edit/:id" component={EditTodo} />
 		</Router>
 	);
 }
