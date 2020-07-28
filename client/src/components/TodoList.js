@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { TodoItem } from "../components/TodoItem";
+import { Header } from "./Header";
 
 export const TodoList = () => {
 	const [todos, setTodos] = useState([]);
@@ -24,17 +25,20 @@ export const TodoList = () => {
 	};
 
 	return (
-		<div>
-			{todos.map((todo) => (
-				<TodoItem
-					key={todo._id}
-					id={todo._id}
-					todoContent={todo.todoContent}
-					todoPriority={todo.todoPriority}
-					todoDate={todo.todoDate}
-					deleteTodo={deleteTodo}
-				/>
-			))}
-		</div>
+		<>
+			<Header headerText="Pony Express" />
+			<div className="flex flex-col space-y-0">
+				{todos.map((todo) => (
+					<TodoItem
+						key={todo._id}
+						id={todo._id}
+						todoContent={todo.todoContent}
+						todoPriority={todo.todoPriority}
+						todoDate={todo.todoDate}
+						deleteTodo={deleteTodo}
+					/>
+				))}
+			</div>
+		</>
 	);
 };
